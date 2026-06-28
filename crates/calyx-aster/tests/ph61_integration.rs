@@ -191,7 +191,8 @@ fn public_repo_internal_dev_tooling_is_not_reintroduced() {
     let git_config = git_config_readback(&repo);
     let remote_origin = git_output(&repo, &["config", "--get", "remote.origin.url"]);
     let is_public_repo = remote_origin.contains("github.com/ChrisRoyse/Calyx.git")
-        || remote_origin.contains("github.com:ChrisRoyse/Calyx.git");
+        || remote_origin.contains("github.com:ChrisRoyse/Calyx.git")
+        || remote_origin.contains("github.com/SynapticSmith/Calyx");
 
     if is_public_repo {
         assert!(!script.exists());
