@@ -158,7 +158,7 @@ pub(super) fn io(stage: &str, error: std::io::Error) -> calyx_core::CalyxError {
     sextant_error(CALYX_INDEX_IO, format!("diskann search {stage}: {error}"))
 }
 
-#[cfg(unix)]
+#[cfg(all(unix, not(target_os = "macos")))]
 pub(super) fn prefetch_node(file: &File, offset: u64, len: usize) {
     use std::os::fd::AsRawFd;
 
@@ -176,7 +176,7 @@ pub(super) fn prefetch_node(file: &File, offset: u64, len: usize) {
     };
 }
 
-#[cfg(not(unix))]
+#[cfg(any(not(unix), target_os = "macos"))]
 pub(super) fn prefetch_node(_file: &File, _offset: u64, _len: usize) {}
 
 #[cfg(test)]
