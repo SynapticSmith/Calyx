@@ -277,8 +277,8 @@ fn os_disk_sample(path: &Path) -> Result<DiskSample> {
     let stat = nix::sys::statvfs::statvfs(path)
         .map_err(|error| io_error(format!("statvfs {}: {error}", path.display())))?;
     Ok(DiskSample {
-        blocks: stat.blocks(),
-        blocks_available: stat.blocks_available(),
+        blocks: stat.blocks() as u64,
+        blocks_available: stat.blocks_available() as u64,
     })
 }
 
