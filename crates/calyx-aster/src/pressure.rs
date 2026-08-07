@@ -282,7 +282,40 @@ fn os_disk_sample(path: &Path) -> Result<DiskSample> {
     })
 }
 
-#[cfg(not(unix))]
+#[cfg(windows)]
+fn os_disk_sample(path: &Path) -> Result<DiskSample> {
+    use std::os::windows::ffi::OsStrExt;
+    let mut path_u16: Vec<u16> = path.as_os_str().encode_wide().collect();
+    path_u16.push(0);
+
+    let mut free_bytes_available = 0u64;
+    let mut total_number_of_bytes = 0u64;
+    let mut total_number_of_free_bytes = 0u64;
+
+    // SAFETY: calling Windows API with valid pointers
+    let res = unsafe {
+        windows_sys::Win32::Storage::FileSystem::GetDiskFreeSpaceExW(
+            path_u16.as_ptr(),
+            &mut free_bytes_available,
+            &mut total_number_of_bytes,
+            &mut total_number_of_free_bytes,
+        )
+    };
+
+    if res == 0 {
+        return Err(io_error(format!(
+            "GetDiskFreeSpaceExW failed for {}",
+            path.display()
+        )));
+    }
+
+    Ok(DiskSample {
+        blocks: total_number_of_bytes,
+        blocks_available: free_bytes_available,
+    })
+}
+
+#[cfg(not(any(unix, windows)))]
 fn os_disk_sample(path: &Path) -> Result<DiskSample> {
     Err(io_error(format!(
         "statvfs unsupported on this platform for {}",
