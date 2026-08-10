@@ -263,7 +263,7 @@ fn ensure_file(label: &str, path: &std::path::Path) -> Result<()> {
     )))
 }
 
-pub(crate) fn qwen3_error(err: candle_core::Error) -> CalyxError {
+pub(crate) fn qwen3_error(err: candle_core::error::Error) -> CalyxError {
     let message = format!("Qwen3 runtime failed: {err}");
     let lower = message.to_ascii_lowercase();
     if lower.contains("out of memory") || lower.contains("memoryallocation") {
