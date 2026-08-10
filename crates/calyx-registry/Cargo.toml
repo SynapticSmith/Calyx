@@ -18,10 +18,10 @@ calyx-core = { path = "../calyx-core" }
 calyx-forge = { path = "../calyx-forge" }
 calyx-ledger = { path = "../calyx-ledger" }
 blake3.workspace = true
-candle-core = "0.10.2"
-candle-nn = "0.10.2"
-candle-transformers = "0.10.2"
-fastembed = { version = "5.16.0", default-features = false, features = ["hf-hub-rustls-tls", "ort-load-dynamic", "qwen3"] }
+candle-core = "0.11.0"
+candle-nn = "0.11.0"
+candle-transformers = "0.11.0"
+fastembed = { version = "5.17.3", default-features = false, features = ["hf-hub-rustls-tls", "ort-load-dynamic", "qwen3"] }
 hf-hub = { version = "0.5.0", default-features = false, features = ["ureq", "rustls-tls"] }
 memmap2.workspace = true
 ort = { version = "=2.0.0-rc.12", default-features = false, features = ["std", "load-dynamic", "cuda", "api-24"] }
